@@ -32,6 +32,10 @@ for state in aggr_transc_path:
                 columns1["Year"].append(year)
                 columns1["Quarter"].append(file.strip('.json'))
 aggr_transc_df=pd.DataFrame(columns1)
+aggr_transc_df["State"] = aggr_transc_df["State"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+aggr_transc_df["State"] = aggr_transc_df["State"].str.replace("-"," ")
+aggr_transc_df["State"] = aggr_transc_df["State"].str.title()
+aggr_transc_df["State"] = aggr_transc_df["State"].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Dama")
 
 
 #aggregrated user details from phonepe data
@@ -66,6 +70,10 @@ for state in aggr_user_path:
                     columns2["Quarter"].append(file.strip('.json'))
                     
 aggr_user_df=pd.DataFrame(columns2)
+aggr_user_df["State"] = aggr_user_df["State"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+aggr_user_df["State"] = aggr_user_df["State"].str.replace("-"," ")
+aggr_user_df["State"] = aggr_user_df["State"].str.title()
+aggr_user_df["State"] = aggr_user_df["State"].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Dama")
 
 
 #map transaction details from phonepe data
@@ -99,6 +107,11 @@ for state in map_transc_path:
                     columns3["Quarter"].append(file.strip('.json'))
 
 map_transc_df=pd.DataFrame(columns3)
+map_transc_df=pd.DataFrame(columns3)
+map_transc_df["State"] = map_transc_df["State"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+map_transc_df["State"] = map_transc_df["State"].str.replace("-"," ")
+map_transc_df["State"] = map_transc_df["State"].str.title()
+map_transc_df["State"] = map_transc_df["State"].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Dama")
 
 
 #map user details from phonepe data
@@ -132,6 +145,10 @@ for state in map_user_path:
                 columns4['Quarter'].append(file.strip('.json'))
 
 map_user_df=pd.DataFrame(columns4)
+map_user_df["State"] = map_user_df["State"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+map_user_df["State"] = map_user_df["State"].str.replace("-"," ")
+map_user_df["State"] = map_user_df["State"].str.title()
+map_user_df["State"] = map_user_df["State"].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Dama")
 
 
 #top transaction details from phonepe data
@@ -165,6 +182,11 @@ for state in top_transc_path:
                 columns5['Quarter'].append(file.strip('.json'))
 
 top_transc_df=pd.DataFrame(columns5)
+top_transc_df["State"] = top_transc_df["State"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+top_transc_df["State"] = top_transc_df["State"].str.replace("-"," ")
+top_transc_df["State"] = top_transc_df["State"].str.title()
+top_transc_df["State"] = top_transc_df["State"].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Dama")
+
 
 #top user details from phonepe data
 path06="G:/Project/pulse/data/top/user/country/india/state"
@@ -195,8 +217,10 @@ for state in top_user_path:
                 columns6['Quarter'].append(file.strip('.json'))
                 
 top_user_df=pd.DataFrame(columns6)
-
-
+top_user_df["State"] = top_user_df["State"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+top_user_df["State"] = top_user_df["State"].str.replace("-"," ")
+top_user_df["State"] = top_user_df["State"].str.title()
+top_user_df["State"] = top_user_df["State"].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Dama")
 
 #converting the datarframes to csv file
 aggr_transc_df.to_csv("aggr_transc_file.csv",index=False)
@@ -214,4 +238,3 @@ mydb=mysql.connector.connect(
     database="phonepe_data"
     )
 mycursor=mydb.cursor()
-
