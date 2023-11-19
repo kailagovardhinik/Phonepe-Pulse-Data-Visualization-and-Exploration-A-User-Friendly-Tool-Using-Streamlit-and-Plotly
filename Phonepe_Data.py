@@ -2,6 +2,8 @@ import os
 import json
 import pandas as pd
 import mysql.connector
+import plotly.express as px
+import plotly.graph_objects as go
 
 #aggregrated transaction details from phonepe data
 path01="G:/Project/pulse/data/aggregated/transaction/country/india/state"
@@ -106,7 +108,6 @@ for state in map_transc_path:
                     columns3["Year"].append(year)
                     columns3["Quarter"].append(file.strip('.json'))
 
-map_transc_df=pd.DataFrame(columns3)
 map_transc_df=pd.DataFrame(columns3)
 map_transc_df["State"] = map_transc_df["State"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
 map_transc_df["State"] = map_transc_df["State"].str.replace("-"," ")
@@ -222,7 +223,7 @@ top_user_df["State"] = top_user_df["State"].str.replace("-"," ")
 top_user_df["State"] = top_user_df["State"].str.title()
 top_user_df["State"] = top_user_df["State"].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Dama")
 
-#converting the datarframes to csv file
+#converting the datarframes to csv file to update to Mysql
 aggr_transc_df.to_csv("aggr_transc_file.csv",index=False)
 aggr_user_df.to_csv("aggr_users_file.csv",index=False)
 map_transc_df.to_csv("map_transc_file.csv",index=False)
@@ -238,3 +239,191 @@ mydb=mysql.connector.connect(
     database="phonepe_data"
     )
 mycursor=mydb.cursor()
+
+#updating the dataframe to Mysql database from python
+#aggregated transaction sql table
+create_query1 = '''CREATE TABLE if not exists aggregated_transaction (
+                                                                States varchar(50),
+                                                                Years int,
+                                                                Quarter int,
+                                                                Transaction_Name varchar(50),
+                                                                Transaction_Count bigint,
+                                                                Transaction_Amount bigint
+                                                                        )'''
+mycursor.execute(create_query1)
+mydb.commit()
+
+for index,row in aggr_transc_df.iterrows():
+        insert_query1 = '''INSERT INTO aggregated_transaction (States,
+                                                Years, 
+                                                Quarter,
+                                                Transaction_Name,
+                                                Transaction_Count,
+                                                Transaction_Amount)
+                                                
+                                                values(%s,%s,%s,%s,%s,%s)'''
+        values = (row["State"],
+                row["Year"],
+                row["Quarter"],
+                row["Transaction Name"],
+                row["Transaction Count"],
+                row["Transaction Amount"]
+                )
+        mycursor.execute(insert_query1,values)
+        mydb.commit()
+        
+
+#aggregated user sql table
+create_query2 = '''CREATE TABLE if not exists aggregated_user (
+                                                                States varchar(50),
+                                                                Years int,
+                                                                Quarter int,
+                                                                Brand_Name varchar(50),
+                                                                Brand_Count bigint,
+                                                                Brand_Percentage bigint
+                                                                )'''
+mycursor.execute(create_query2)
+mydb.commit()
+
+for index,row in aggr_user_df.iterrows():
+        insert_query2 = '''INSERT INTO aggregated_user (States,
+                                                                Years,
+                                                                Quarter,
+                                                                Brand_Name,
+                                                                Brand_Count ,
+                                                                Brand_Percentage)
+                                                
+                                                values(%s,%s,%s,%s,%s,%s)'''
+        values = (row["State"],
+                row["Year"],
+                row["Quarter"],
+                row["Brand Name"],
+                row["Brand Count"],
+                row["Brand Percentage"]
+                )
+        mycursor.execute(insert_query2,values)
+        mydb.commit()
+        
+
+#map transaction sql table
+create_query3 = '''CREATE TABLE if not exists map_transaction (
+                                                                States varchar(50),
+                                                                Years int,
+                                                                Quarter int,
+                                                                District_Name varchar(50),
+                                                                District_Count bigint,
+                                                                District_Amount float
+                                                                )'''
+mycursor.execute(create_query3)
+mydb.commit()
+
+for index,row in map_transc_df.iterrows():
+        insert_query3 = '''INSERT INTO map_transaction (States,
+                                                        Years,
+                                                        Quarter,
+                                                        District_Name,
+                                                        District_Count,
+                                                        District_Amount)
+                                                
+                                                values(%s,%s,%s,%s,%s,%s)'''
+        values = (row["State"],
+                row["Year"],
+                row["Quarter"],
+                row["District Name"],
+                row["District Count"],
+                row["District Amount"]
+                )
+        mycursor.execute(insert_query3,values)
+        mydb.commit()
+        
+#map user sql table
+create_query4 = '''CREATE TABLE if not exists map_user (
+                                                                States varchar(50),
+                                                                Years int,
+                                                                Quarter int,
+                                                                District_Name varchar(50),
+                                                                Registerd_Users bigint,
+                                                                Apps_Opened bigint
+                                                                )'''
+mycursor.execute(create_query4)
+mydb.commit()
+
+for index,row in map_user_df.iterrows():
+        insert_query4 = '''INSERT INTO map_user (States,
+                                                        Years,
+                                                        Quarter,
+                                                        District_Name,
+                                                        Registerd_Users,
+                                                        Apps_Opened)
+                                                
+                                                values(%s,%s,%s,%s,%s,%s)'''
+        values = (row["State"],
+                row["Year"],
+                row["Quarter"],
+                row["District"],
+                row["Registered Users"],
+                row["No. of Apps Open"]
+                )
+        mycursor.execute(insert_query4,values)
+        mydb.commit()
+        
+
+#top transaction sql table
+create_query5 = '''CREATE TABLE if not exists top_transaction (
+                                                                States varchar(50),
+                                                                Years int,
+                                                                Quarter int,
+                                                                Pincodes bigint,
+                                                                Transaction_Count bigint,
+                                                                Transaction_Amount bigint
+                                                                );'''
+mycursor.execute(create_query5)
+mydb.commit()
+
+for index,row in top_transc_df.iterrows():
+        insert_query5 = '''INSERT INTO top_transaction (States,
+                                                        Years,
+                                                        Quarter,
+                                                        Pincodes,
+                                                        Transaction_Count,
+                                                        Transaction_Amount)
+                                                
+                                                values(%s,%s,%s,%s,%s,%s)'''
+        values = (row["State"],
+                row["Year"],
+                row["Quarter"],
+                row["Pincodes"],
+                row["Transaction Count"],
+                row["Transaction Amount"]
+                )
+        mycursor.execute(insert_query5,values)
+        mydb.commit()
+        
+#top user sql table
+create_query6 = '''CREATE TABLE if not exists top_user (
+                                                        States varchar(50),
+                                                        Years int,
+                                                        Quarter int,
+                                                        Pincodes bigint,
+                                                        No_of_Users bigint
+                                                        )'''
+                                                        
+mycursor.execute(create_query6)
+mydb.commit()
+
+for index,row in top_user_df.iterrows():
+        insert_query6 = '''INSERT INTO top_user (States,
+                                                Years,
+                                                Quarter,
+                                                Pincodes,
+                                                No_of_Users
+                                                )
+                                                values(%s,%s,%s,%s,%s)'''
+        values = (row["State"],
+                row["Year"],
+                row["Quarter"],
+                row["Pincode"],
+                row["No. of Users"]
+                )
+        mycursor.execute(insert_query6,values)
+        mydb.commit()
