@@ -2,8 +2,6 @@ import os
 import json
 import pandas as pd
 import mysql.connector
-import plotly.express as px
-import plotly.graph_objects as go
 
 #aggregrated transaction details from phonepe data
 path01="G:/Project/pulse/data/aggregated/transaction/country/india/state"
@@ -231,7 +229,7 @@ map_user_df.to_csv("map_user_file.csv",index=False)
 top_transc_df.to_csv("top_transc_file.csv",index=False)
 top_user_df.to_csv("top_user_file.csv",index=False)
 
-#connecting to SQl
+#connecting to SQl to updat the data directly
 mydb=mysql.connector.connect(
     host="localhost",
     user="root",
