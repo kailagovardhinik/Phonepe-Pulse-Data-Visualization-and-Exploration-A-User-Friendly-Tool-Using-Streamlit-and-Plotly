@@ -18,19 +18,16 @@ The PhonePe Pulse Github repository is a treasure trove of diverse metrics and s
 
 ## Approach
 ## Data Extraction:
-Clone the GitHub repository using scripting to fetch data and store it in a suitable format like CSV or JSON.
+The GitHub repository has ben cloned using Git and the data is converted to store it in a suitable format like CSV or JSON.
 
 ## Data Transformation:
-Use Python, Pandas, and other relevant libraries for data manipulation, cleaning, and preprocessing.
+Data manipulation, cleaning, and preprocessing has been done.
 
 ## Database Insertion:
-Utilize the "mysql-connector-python" library to connect to a MySQL database and insert transformed data using SQL commands.
+After the data transformation proceee the data is migrated to MySQL database
 
 ## Dashboard Creation:
-Develop an interactive dashboard using Streamlit and Plotly, incorporating Plotly's geo map functions.
+Interactive dashboard has been created using Streamlit and Plotly, incorporating Plotly's geo map functions.
 
 ## Data Retrieval:
-Connect to the MySQL database using "mysql-connector-python" to fetch data into a Pandas dataframe, dynamically updating the dashboard.
-
-## Deployment:
-Ensure the solution is secure, efficient, and user-friendly. Thoroughly test and deploy the dashboard publicly for accessibility.
+The data is mysql is converted to Pandas dataframe, dynamically updating the dashboard.
