@@ -278,7 +278,7 @@ create_query2 = '''CREATE TABLE if not exists aggregated_user (
                                                                 Quarter int,
                                                                 Brand_Name varchar(50),
                                                                 Brand_Count bigint,
-                                                                Brand_Percentage bigint
+                                                                Brand_Percentage float
                                                                 )'''
 mycursor.execute(create_query2)
 mydb.commit()
